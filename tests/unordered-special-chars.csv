@@ -1,0 +1,4 @@
+id,foo bar,f/b,f'b,f&b,"f ""b"""
+1,a b,a/b,a'b,a&b,"a ""b"""
+3,a e,a/e,a'e,a&e,"a ""e"""
+2,a c,a/c,a'c,a&c,"a ""c"""
