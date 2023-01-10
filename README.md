@@ -2,7 +2,10 @@
 
 This library can sort huge CSV files efficiently.
 
-Keywords:
+Once your CSV files are properly sorted on a primary key, they can also be efficiently compared to produce a diff file,
+using my other lib https://github.com/livetocode/tabular-data-differ
+
+### Keywords
 - csv
 - huge
 - large
@@ -11,6 +14,15 @@ Keywords:
 - order
 - fast
 - sqlite
+
+### Table of content
+
+- [**Why another lib?**](#why-another-lib)
+- [**Features**](#features)
+- [**Prerequisites**](#prerequisites)
+- [**Usage**](#usage)
+- [**Documentation**](#documentation)
+- [**Development**](#development)
 
 # Why another lib?
 
@@ -24,7 +36,7 @@ This library acts as a thin wrapper around the SQLite library and delegates all 
 - can sort huge files that wouldn't fit in memory
 - very fast since it relies on SQLite which is a highly optimized C library
 
-# Requirements
+# Prerequisites
 
 The "sqlite3" command must be installed on your system.
 
@@ -240,4 +252,50 @@ sort({
 });
 ```
 
+### Order 2 CSV files and diff them on the console
 
+Note that you must also install the diff lib with `npm i tabular-data-differ`.
+
+```Typescript
+import { diff } from 'tabular-data-differ';
+import { sort } from 'huge-csv-sorter';
+
+await sort({
+    source: './tests/a.csv',
+    destination: './tests/a.sorted.csv',
+    orderBy: ['id'],
+});
+
+await sort({
+    source: './tests/b.csv',
+    destination: './tests/b.sorted.csv',
+    orderBy: ['id'],
+});
+
+const stats = diff({
+    oldSource: './tests/a.sorted.csv',
+    newSource: './tests/b.sorted.csv',
+    keys: ['id'],
+}).to('console');
+console.log(stats);
+```
+
+# Documentation
+
+# Development
+
+## Install
+
+```shell
+git clone git@github.com:livetocode/huge-csv-sorter.git
+cd huge-csv-sorter
+npm i
+```
+
+## Tests
+
+Tests are implemented with Jest and can be run with:
+`npm t`
+
+You can also look at the coverage with:
+`npm run show-coverage`
