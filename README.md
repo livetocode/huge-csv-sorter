@@ -75,7 +75,7 @@ sort({
 ```Typescript
 import { sort } from 'huge-csv-sorter';
 
-sort({
+await sort({
     source: 'huge.csv',
     destination: 'huge.sorted.csv',
     orderBy: ['code', 'version'],
@@ -87,7 +87,7 @@ sort({
 ```Typescript
 import { sort } from 'huge-csv-sorter';
 
-sort({
+await sort({
     source: 'huge.csv',
     destination: 'huge.sorted.csv',
     orderBy: [
@@ -105,7 +105,7 @@ sort({
 ```Typescript
 import { sort } from 'huge-csv-sorter';
 
-sort({
+await sort({
     source: 'huge.csv',
     destination: 'huge.sorted.csv',
     select: [
@@ -122,7 +122,7 @@ sort({
 ```Typescript
 import { sort } from 'huge-csv-sorter';
 
-sort({
+await sort({
     source: 'huge.csv',
     destination: 'huge.sorted.csv',
     schema: [
@@ -146,7 +146,7 @@ sort({
 ```Typescript
 import { sort } from 'huge-csv-sorter';
 
-sort({
+await sort({
     source: {
         filename: 'huge.tsv',
         delimiter: '\t',
@@ -164,7 +164,7 @@ sort({
 ```Typescript
 import { sort } from 'huge-csv-sorter';
 
-sort({
+await sort({
     source: 'huge.csv',
     destination: 'huge.sorted.csv',
     orderBy: ['id'],
@@ -177,7 +177,7 @@ sort({
 ```Typescript
 import { sort } from 'huge-csv-sorter';
 
-sort({
+await sort({
     source: 'huge.csv',
     destination: 'huge.sorted.csv',
     schema: [
@@ -201,7 +201,7 @@ Note that the where clause should be pure valid SQL and no validation/conversion
 ```Typescript
 import { sort } from 'huge-csv-sorter';
 
-sort({
+await sort({
     source: 'huge.csv',
     destination: 'huge.sorted.csv',
     orderBy: ['The ID'],
@@ -214,7 +214,7 @@ sort({
 ```Typescript
 import { sort } from 'huge-csv-sorter';
 
-sort({
+await sort({
     source: 'huge.csv',
     destination: 'huge.sorted.csv',
     orderBy: ['id'],
@@ -228,7 +228,7 @@ sort({
 ```Typescript
 import { sort } from 'huge-csv-sorter';
 
-sort({
+await sort({
     source: 'huge.csv',
     destination: 'huge.sorted.csv',
     sqlite: {
@@ -244,7 +244,7 @@ sort({
 ```Typescript
 import { sort } from 'huge-csv-sorter';
 
-sort({
+await sort({
     source: 'huge.csv',
     destination: 'huge.sorted.csv',
     orderBy: ['id'],
