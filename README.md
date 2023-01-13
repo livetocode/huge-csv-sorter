@@ -272,7 +272,7 @@ await sort({
     orderBy: ['id'],
 });
 
-const stats = diff({
+const stats = await diff({
     oldSource: './tests/a.sorted.csv',
     newSource: './tests/b.sorted.csv',
     keys: ['id'],

@@ -116,11 +116,12 @@ export function execSqlite(options: SorterOptions, script: string): Promise<numb
         const command = spawn(options.sqlite.cli ?? 'sqlite3', [options.sqlite.filename]);
     
         command.stdout.on('data', output => {
-            output.toString().split('\n').map((x: string) => `[SQLite] ${x}`).forEach(options.logger);
+            const txt: string = output.toString();
+            txt.split('\n').map((x) => `[SQLite] ${x}`).forEach(x => options.logger(x));
         });
         command.stderr.on('data', output => {
             const lines: string[] = output.toString().split('\n');
-            lines.map(x => `[SQLite] ${x}`).forEach(options.logger);
+            lines.map(x => `[SQLite] ${x}`).forEach(x => options.logger(x));
             errors.push(...lines);
             const hasMismatch = lines.some(line => colMismatchWarning.test(line));
             if (hasMismatch) {
@@ -270,7 +271,7 @@ export class Sorter {
     async executeScript(options: SorterOptions, script: string) {
         options.logger(`Open DB ${options.sqlite.filename}`);
         options.logger(`Execute script:`);
-        script.split('\n').map(x => `   ${x}`).forEach(options.logger);
+        script.split('\n').map(x => `   ${x}`).forEach(x => options.logger(x));
         await execSqlite(options, script);    
     }
 

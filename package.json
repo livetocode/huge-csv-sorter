@@ -19,7 +19,7 @@
   "main": "dist/sorter.js",
   "scripts": {
     "compile": "./node_modules/.bin/tsc",
-    "test": "jest",
+    "test": "jest --verbose",
     "show-coverage": "open output/coverage/lcov-report/index.html"
   },
   "author": "Morgan Martinet",
