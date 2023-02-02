@@ -225,6 +225,9 @@ await sort({
 
 ### Sort a file with custom sqlite settings
 
+If you want to keep the SQLite database for further inspection after the import, you override the sqlite options.
+You can also change the filename of the SQLite database which will use the destination filename and replace the csv extension with sqlite.
+
 ```Typescript
 import { sort } from 'huge-csv-sorter';
 
@@ -240,6 +243,8 @@ await sort({
 ```
 
 ### Log all commands
+
+If you want to understand how the schema, the import and the query are implemented in SQLite, you can provide your logger function:
 
 ```Typescript
 import { sort } from 'huge-csv-sorter';
@@ -281,6 +286,59 @@ console.log(stats);
 ```
 
 # Documentation
+
+## FileOptions
+
+Name     |Required|Default value|Description
+---------|--------|-------------|-----------
+filename | yes    |             | a filename
+delimiter| no     | ,           | the optional delimiter of the columns
+
+## SchemaColumn
+
+Name     |Required|Default value|Description
+---------|--------|-------------|-----------
+name     | yes    |             | the name of the column.
+type     | no     | string      | the type of the column: either a string or a number.
+
+## SortedColumn
+
+Name     |Required|Default value|Description
+---------|--------|-------------|-----------
+name     | yes    |             | the name of the column.
+direction| no     | ASC         | the sort direction of the data.
+
+## SQLiteOptions
+
+Name     |Required|Default value|Description
+---------|--------|-------------|-----------
+filename | yes    |             | the filename of the SQLite temporary database.
+keepDB   | no     | false       | specifies whether to keep the database after the operation or if it should be deleted.
+cli      | no     | sqlite3     | the SQLite command line tool.
+
+## SortOptions
+
+Name        |Required|Default value|Description
+------------|--------|-------------|-----------
+source      | yes    |             | either a filename or a FileOptions object
+destination | yes    |             | either a filename or a FileOptions object
+schema      | no     |             | an optional list of columns annotated with their type (string or number)
+select      | no     |             | a selection of columns to keep from the source CSV. It will keep all columns when not specified.
+orderBy     | yes    |             | a list of columns for ordering the records.
+where       | no     |             | the conditions for filtering the records.
+offset      | no     | 0           | the offset from which to start selecting the records
+limit       | no     |             | the maximum number of records to select. It will keep all records when not specified.
+sqlite      | no     |             | options for customizing SQLite.
+logger      | no     |             | a function for logging commands sent to SQLite
+
+## sort
+
+The sort function will require a single parameter of type {SortOptions}.
+
+There are only 3 required options:
+- source
+- destination
+- orderBy
 
 # Development
 

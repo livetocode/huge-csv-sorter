@@ -200,7 +200,7 @@ ghi,3,beef,meat,5
                     'code', 
                     {
                         name: 'version',
-                        order: 'DESC',
+                        direction: 'DESC',
                     },
                 ],
             });
@@ -225,7 +225,7 @@ ghi,1,beef,meat,3
                 orderBy: [
                     {
                         name: 'category', 
-                        order: 'DESC',
+                        direction: 'DESC',
                     },
                     'code', 
                     'version'],

@@ -2,48 +2,145 @@ import fs from 'fs';
 import path from 'path';
 import { spawn } from 'node:child_process';
 
+/**
+ * A logger callback
+ */
 export type Logger = (message: string) => void;
 
+/**
+ * A string representing the filename
+ */
 export type Filename = string;
 
+/**
+ * An object representing file options
+ */
 export type FileOptions = {
+    /**
+     * A required string representing the filename
+     */
     filename: Filename;
+    /**
+     * An optional string representing the delimiter of the columns
+     * Defaults to comma.
+     */
     delimiter?: string;
 }
 
+/**
+ * A string representing the column name
+ */
 export type ColumnName = string;
 
+/**
+ * A string literal type representing the type of the column
+ */
 export type ColumnType = 'string' | 'number';
 
+/**
+ * An object representing a schema column
+ */
 export type SchemaColumn = {
+    /**
+     * A required string representing the name of the column
+     */
     name: ColumnName;
+    /**
+     * An optional string literal type representing the type of the column
+     */
     type?: ColumnType;
 }
 
-export type Order = 'ASC' | 'DESC';
+/**
+ * A string literal type representing the sort direction of the data
+ */
+export type SortDirection = 'ASC' | 'DESC';
 
-export type OrderedColumn = {
+/**
+ * An object representing a sorted column
+ */
+export type SortedColumn = {
+    /**
+     * A required string representing the name of the column
+     */
     name: ColumnName;
-    order?: Order;
+    /**
+     * An optional string literal type representing the sort direction of the data
+     */
+    direction?: SortDirection;
 }
 
+/**
+ * An interface representing options for SQLite operations
+ */
 export interface SQLiteOptions {
+    /**
+     * A required string representing the filename of the SQLite temporary database.
+     */
     filename: Filename;
+    /**
+     * An optional boolean indicating whether to keep the database after the operation or if it should be deleted.
+     * Defaults to false.
+     */
     keepDB?: boolean;
+    /**
+     * An optional string representing the SQLite command tool.
+     * Defaults to sqlite3.
+     */
     cli?: string;
+    /**
+     * An optional boolean indicating whether to create an index for the database.
+     * Defaults to true;
+     */
     createIndex?: boolean;
 }
 
+/**
+ * An interface representing sort options
+ */
 export interface SortOptions {
+    /**
+     * A required value representing the source file, either as a Filename or a FileOptions object
+     */
     source: Filename | FileOptions;
+    /**
+     * A required value representing the destination file, either as a Filename or a FileOptions object
+     */
     destination: Filename | FileOptions;
+    /**
+     * An optional array of either ColumnName or SchemaColumn objects representing the schema of the data.
+     * If not specified, it will assume that all columns are of type string.
+     */
     schema?: (ColumnName | SchemaColumn)[];
+    /**
+     * An optional array of ColumnName objects representing the columns to select.
+     * If not specified, it will select all columns.
+     */
     select?: ColumnName[];
-    orderBy: (ColumnName | OrderedColumn)[];
+    /**
+     * A required array of either ColumnName or OrderedColumn objects representing the columns to order by
+     */
+    orderBy: (ColumnName | SortedColumn)[];
+    /**
+     * An optional string representing the conditions for filtering the records
+     * Note that the where clause should be pure valid SQL and no validation/conversion is done by this library.
+     */
     where?: string;
+    /**
+     * An optional number representing the offset from which to start selecting the records
+     */
     offset?: number;
+    /**
+     * An optional number representing the maximum number of records to select
+     */
     limit?: number;
+    /**
+     * An optional for customizing SQLite operations
+     */
     sqlite?: SQLiteOptions;
+    /**
+     * An optional function for logging commands sent to SQLite
+     */
     logger?: Logger;
 }
 
@@ -52,7 +149,7 @@ interface SorterOptions {
     destination: FileOptions;
     schema: SchemaColumn[];
     select: ColumnName[];
-    orderBy: OrderedColumn[];
+    orderBy: SortedColumn[];
     where?: string;
     offset?: number;
     limit?: number;
@@ -158,6 +255,11 @@ function toColumnName(name: string) {
     return `"${escapedName}"`;
 }
 
+/**
+ * Sorts an existing CSV file and produces a new file.
+ * You must specify the source, destination and orderBy options.
+ * @param options specifies the options for sorting a CSV file.
+ */
 export async function sort(options: SortOptions): Promise<void> {
     const opt = convertOptions(options);
     const sorter = new Sorter();
@@ -199,7 +301,7 @@ export class Sorter {
 
     generateScript(options: SorterOptions): string {
         const indexedCols = options.orderBy.map(col => toColumnName(col.name)).join(', ');
-        const orderBy = options.orderBy.map(col => `${toColumnName(col.name)} ${col.order ?? ''}`.trim()).join(', ');
+        const orderBy = options.orderBy.map(col => `${toColumnName(col.name)} ${col.direction ?? ''}`.trim()).join(', ');
         const lines: string[] = [];
 
         // Optional schema
