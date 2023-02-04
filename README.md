@@ -94,7 +94,7 @@ await sort({
         'code', 
         {
             name: 'version',
-            order: 'DESC',
+            sortDirection: 'DESC',
         }
     ],
 });
@@ -303,10 +303,10 @@ type     | no     | string      | the type of the column: either a string or a n
 
 ## SortedColumn
 
-Name     |Required|Default value|Description
----------|--------|-------------|-----------
-name     | yes    |             | the name of the column.
-direction| no     | ASC         | the sort direction of the data.
+Name         |Required|Default value|Description
+-------------|--------|-------------|-----------
+name         | yes    |             | the name of the column.
+sortDirection| no     | ASC         | the sort direction of the data.
 
 ## SQLiteOptions
 
@@ -322,7 +322,7 @@ Name        |Required|Default value|Description
 ------------|--------|-------------|-----------
 source      | yes    |             | either a filename or a FileOptions object
 destination | yes    |             | either a filename or a FileOptions object
-schema      | no     |             | an optional list of columns annotated with their type (string or number)
+schema      | no     |             | an optional list of columns annotated with their type (string or number). Note that if is specified, it **must** match all columns of the source file, in the same order of appearance, otherwise the SQLite import will be aborted. 
 select      | no     |             | a selection of columns to keep from the source CSV. It will keep all columns when not specified.
 orderBy     | yes    |             | a list of columns for ordering the records.
 where       | no     |             | the conditions for filtering the records.

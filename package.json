@@ -1,6 +1,6 @@
 {
   "name": "huge-csv-sorter",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "sorts huge CSV files efficiently",
   "keywords": [
     "csv",

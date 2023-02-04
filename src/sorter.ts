@@ -67,7 +67,7 @@ export type SortedColumn = {
     /**
      * An optional string literal type representing the sort direction of the data
      */
-    direction?: SortDirection;
+    sortDirection?: SortDirection;
 }
 
 /**
@@ -110,6 +110,8 @@ export interface SortOptions {
     /**
      * An optional array of either ColumnName or SchemaColumn objects representing the schema of the data.
      * If not specified, it will assume that all columns are of type string.
+     * Note that if is specified, it **must** match all columns of the source file, in the same order of appearance,
+     * otherwise the SQLite import will be aborted. 
      */
     schema?: (ColumnName | SchemaColumn)[];
     /**
@@ -259,6 +261,14 @@ function toColumnName(name: string) {
  * Sorts an existing CSV file and produces a new file.
  * You must specify the source, destination and orderBy options.
  * @param options specifies the options for sorting a CSV file.
+ * @example
+ * import { sort } from 'huge-csv-sorter';
+ *
+ * sort({
+ *    source: 'huge.csv',
+ *    destination: 'huge.sorted.csv',
+ *    orderBy: ['id'],
+ * });
  */
 export async function sort(options: SortOptions): Promise<void> {
     const opt = convertOptions(options);
@@ -301,7 +311,7 @@ export class Sorter {
 
     generateScript(options: SorterOptions): string {
         const indexedCols = options.orderBy.map(col => toColumnName(col.name)).join(', ');
-        const orderBy = options.orderBy.map(col => `${toColumnName(col.name)} ${col.direction ?? ''}`.trim()).join(', ');
+        const orderBy = options.orderBy.map(col => `${toColumnName(col.name)} ${col.sortDirection ?? ''}`.trim()).join(', ');
         const lines: string[] = [];
 
         // Optional schema
