@@ -54,13 +54,21 @@ describe('Sorter', () => {
                     orderBy: [{ name: 'id' }],
                     logger: (msg) => { logs.push(msg); },
                 }, script);
-            }).rejects.toThrow(`Parse error near line 1: no such function: unknownfunc`);
-            expect(logs).toEqual([
-                '[SQLite] Parse error near line 1: no such function: unknownfunc',
-                '[SQLite]   select unknownfunc(1);',
-                '[SQLite]          ^--- error here',
-                '[SQLite] '
-            ]);
+            }).rejects.toThrow(`no such function: unknownfunc`);
+            if (logs.some(x => x.includes('^--- error here'))) {
+                // The latest version of SQLite3 enhanced error reporting
+                expect(logs).toEqual([
+                    '[SQLite] Parse error near line 1: no such function: unknownfunc',
+                    '[SQLite]   select unknownfunc(1);',
+                    '[SQLite]          ^--- error here',
+                    '[SQLite] '
+                ]);    
+            } else {
+                expect(logs).toEqual([
+                    '[SQLite] Error: near line 1: in prepare, no such function: unknownfunc (1)',
+                    '[SQLite] '          
+                ]);    
+            }
         });
         test('should fail with unknown sqlite command', async () => {
             await expect(async () => {
