@@ -19,7 +19,6 @@ jobs:
         with:
           node-version: 20
       - run: sudo apt update
-      - run: sudo apt upgrade
       - run: sudo apt install sqlite3
       - run: sqlite3 --version
       - run: npm ci
