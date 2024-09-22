@@ -18,6 +18,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
+      - uses: actions/setup-sqlite@v1.0.1
+        with:
+          sqlite-version: 3.46.1
+          sqlite-year: 2024
       - run: npm ci
       - run: npm test
         env:
