@@ -18,10 +18,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-      - name: setup-sqlite-action
-        uses: ryohidaka/action-setup-sqlite@v1.1.0
-        with:
-          version: 3.43.2
+      - run: sudo apt update
+      - run: sudo apt upgrade
+      - run: sudo apt install sqlite3
       - run: sqlite3 --version
       - run: npm ci
       - run: npm test
