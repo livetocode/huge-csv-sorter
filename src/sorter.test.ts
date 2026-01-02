@@ -83,7 +83,7 @@ describe('Sorter', () => {
                     orderBy: [{ name: 'id' }],
                     logger: (msg) => { logs.push(msg); },
                 }, script);
-            }).rejects.toThrowError(`spawn unknown-cli ENOENT`);            
+            }).rejects.toThrow(`spawn unknown-cli ENOENT`);            
         });
     });
     describe('validations', () => {
@@ -94,7 +94,7 @@ describe('Sorter', () => {
                     destination: './output/files/file-should-not-exist.sorted.csv',
                     orderBy: ['id'],
                 });    
-            }).rejects.toThrowError(`File './tests/file-should-not-exist.csv' does not exist!`);
+            }).rejects.toThrow(`File './tests/file-should-not-exist.csv' does not exist!`);
         });
         test('source destination folder should exist', async () => {
             await expect(async () => {
@@ -103,7 +103,7 @@ describe('Sorter', () => {
                     destination: './output/should-not-exist/unordered-id.sorted.csv',
                     orderBy: ['id'],
                 });    
-            }).rejects.toThrowError(`Folder './output/should-not-exist' does not exist!`);
+            }).rejects.toThrow(`Folder './output/should-not-exist' does not exist!`);
         });
         test('should not accept empty orderBy option', async () => {
             await expect(async () => {
@@ -112,7 +112,7 @@ describe('Sorter', () => {
                     destination: './output/files/unordered-id.sorted.csv',
                     orderBy: [],
                 });    
-            }).rejects.toThrowError(`You must provide an orderBy option to order the file!`);            
+            }).rejects.toThrow(`You must provide an orderBy option to order the file!`);            
         });
         test('should keep db when specified', async () => {
             if(fs.existsSync('./output/files/unordered-id.sorted.csv')) {
@@ -339,7 +339,7 @@ def,3,pear,fruit,0.33
                     orderBy: ['id'],
                     offset: 1,
                 });
-            }).rejects.toThrowError('You must also specify a limit when using an offset!');
+            }).rejects.toThrow('You must also specify a limit when using an offset!');
         });
 
         test('with limit', async () => {
@@ -424,7 +424,7 @@ def,3,pear,fruit,0.33
                     orderBy: ['id'],
                     logger: msg => logs.push(msg),
                 });
-            }).rejects.toThrowError(`SQLite error (Exit code = null):
+            }).rejects.toThrow(`SQLite error (Exit code = null):
 ./tests/unordered-id.csv:2: expected 2 columns but found 3 - extras ignored
 
 SQLite command was killed because a column mismatch between schema and inputs was detected.`);
